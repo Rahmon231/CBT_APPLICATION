@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -37,6 +38,13 @@ public class SplashActivity extends AppCompatActivity {
         appName.setTypeface(typeface);
         Animation anim = AnimationUtils.loadAnimation(this,R.anim.myanim);
         appName.setAnimation(anim);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                soundPool.play(sound,1,1,0,0,1);
+            }
+        },2000);
 
 
         new Thread(new Runnable() {
@@ -44,9 +52,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                  try {
                      sleep(3000);
-                     soundPool.play(sound,1,1,0,0,1);
-
-                } catch (InterruptedException e) {
+                     //soundPool.play(sound,1,1,0,0,1);
+                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 //soundPool.play(sound,1,1,0,0,1);

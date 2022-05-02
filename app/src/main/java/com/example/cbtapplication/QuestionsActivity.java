@@ -6,6 +6,8 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -26,11 +28,22 @@ public class QuestionsActivity extends AppCompatActivity implements View.OnClick
     private  int questNum;
     private CountDownTimer countDownTimer;
     private int score;
+    private SoundPool soundPool;
+    private int correctSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(2)
+                .setAudioAttributes(audioAttributes)
+                .build();
+        correctSound = soundPool.load(this,R.raw.correct,1);
         questionTV = findViewById(R.id.questionsID);
         qCountTV = findViewById(R.id.questionNumberID);
         timerTV = findViewById(R.id.countDownTimerID);
@@ -115,12 +128,14 @@ public class QuestionsActivity extends AppCompatActivity implements View.OnClick
         if(selectedOpt == questionList.get(questNum).getCorrectAns()){
             //right answer
             ((Button)view).setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+            soundPool.play(correctSound,1,1,0,0,1);
             score++;
 
         }
         else{
             //wrong answer
             ((Button)view).setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+
 
             switch (questionList.get(questNum).getCorrectAns()){
                 case 1:
