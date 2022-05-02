@@ -30,6 +30,7 @@ public class QuestionsActivity extends AppCompatActivity implements View.OnClick
     private int score;
     private SoundPool soundPool;
     private int correctSound;
+    private int wrongSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class QuestionsActivity extends AppCompatActivity implements View.OnClick
                 .setAudioAttributes(audioAttributes)
                 .build();
         correctSound = soundPool.load(this,R.raw.correct,1);
+        wrongSound = soundPool.load(this,R.raw.defeat_two,1);
         questionTV = findViewById(R.id.questionsID);
         qCountTV = findViewById(R.id.questionNumberID);
         timerTV = findViewById(R.id.countDownTimerID);
@@ -135,6 +137,7 @@ public class QuestionsActivity extends AppCompatActivity implements View.OnClick
         else{
             //wrong answer
             ((Button)view).setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            soundPool.play(wrongSound,1,1,0,0,1);
 
 
             switch (questionList.get(questNum).getCorrectAns()){
